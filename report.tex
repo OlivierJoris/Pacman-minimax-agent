@@ -31,7 +31,36 @@
 
 \begin{enumerate}[label=\alph*.,leftmargin=*]
     \item
-    \item
+    	\begin{itemize}
+    		\item (Initial state) A game state is given by the position of Pacman, the position of the ghost, and the positions of the remaining food dots in the maze.\\
+    		The \textbf{initial state} is given by the layout of the maze, the initial position of Pacman, the initial position of the ghost, and the initial positions of all the food dots in the maze.
+    		
+    		\item (Player function) The game is a turn-taking game. Pacman moves first then the ghost moves then Pacman moves, etc.
+    		
+    		\item (Actions) Pacman and the ghost can go north, south, east, or west if they don't go through a wall. Both of them can, also, stay on the same cell.\\
+    		If Pacman arrives on a cell with a food, Pacman eats the food.\\
+    		If the ghost arrives on the cell where Pacman is, the ghost kills Pacman.
+    		
+    		\item (Terminal test) True if Pacman has eaten all the foods without being killed or Pacman was killed by the ghost.
+    		
+    		\item (Transition model) The movement of Pacman or the ghost to another cell will modified their position in the maze (if the movement is legal). If Pacman eats a food, the food is removed from the maze. If the ghost kills Pacman, Pacman is removed from the maze and can no longer play.
+    		
+    		%\item (Utility)\\
+    		%	\begin{equation}
+  			%		utility(s,p)=\left\{
+    		%			\begin{array}{@{} l c @{}}
+      		%				\text{initial number of foods} & s = \text{Pacman wins and } p = \text{Pacman}\\
+      		%				- \text{initial number of foods} & s = \text{Ghost wins}
+    		%			\end{array}\right.
+  			%	\label{eq4}
+			%\end{equation}
+			
+			\item (Utility) Initial number of food dots for a game for which Pacman wins.\\\hspace*{1.2cm}
+			$-$ initial number of food dots for a game for which the ghost wins.
+    	\end{itemize}
+    	
+    \item Pacman (max agent) will want to maximize the utility function which consists in eating all the food dots. If it is able to eat all the foods without being killed, it wins the game and the ghost looses the game.\\
+    The ghost (min agent) will want to minimize the utility function which consists in stopping Pacman before the latter eats all the food dots. If the ghost can reach its goal, it wins the game and Pacman loses.\\
 \end{enumerate}
 
 \section{Implementation}
