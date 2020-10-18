@@ -55,12 +55,19 @@
   			%	\label{eq4}
 			%\end{equation}
 			
-			\item (Utility) Initial number of food dots for a game for which Pacman wins.\\\hspace*{1.2cm}
-			$-$ initial number of food dots for a game for which the ghost wins.
+			\item (Utility) \begin{equation}
+  										utility=\left\{
+    										\begin{array}{@{} l c @{}}
+      											1 & \text{Pacman wins (ghost loses)}\\
+      											-1 & s = \text{Pacman loses (ghost wins)}
+    										\end{array}\right.
+  										\label{eq4}
+									\end{equation}\\
+				\textit{We could also use the game score (I'm not sure that we'll have a zero-sum game).}
     	\end{itemize}
     	
-    \item Pacman (max agent) will want to maximize the utility function which consists in eating all the food dots. If it is able to eat all the foods without being killed, it wins the game and the ghost loses the game.\\
-    The ghost (min agent) will want to minimize the utility function which consists in stopping Pacman before the latter eats all the food dots. If the ghost can reach its goal, it wins the game and Pacman loses.\\
+    \item Pacman (max agent) will want to maximize the utility function which consists in eating all the food dots with the smallest number of moves possible. If it is able to eat all the foods without being killed, it wins the game and the ghost loses the game.\\
+    The ghost (min agent) will want to minimize the utility function which consists in killing Pacman as fast as possible before the latter eats all the food dots. If the ghost can reach its goal, it wins the game and Pacman loses.\\
 \end{enumerate}
 
 \section{Implementation}
