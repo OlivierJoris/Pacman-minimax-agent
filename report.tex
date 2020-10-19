@@ -31,7 +31,42 @@
 
 \begin{enumerate}[label=\alph*.,leftmargin=*]
     \item
-    \item
+    	\begin{itemize}
+    		\item (Initial state) A game state is given by the position of Pacman, the position of the ghost, and the positions of the remaining food dots in the maze.\\
+    		The initial state is given by the layout of the maze, the initial position of Pacman, the initial position of the ghost, and the initial positions of all the food dots in the maze.
+    		
+    		\item (Player function) The player function is a function that takes a state as input and returns a value corresponding to the player who has to play. It respects this principle : an agent takes an action then the other takes one and so on. It is a turn taking game.
+    		
+    		\item (Actions) Pacman and the ghost can go north, south, east, or west if they don't go through a wall. Both of them can, also, stay on the same cell.\\
+    		If Pacman arrives on a cell with a food, Pacman eats the food.\\
+    		If the ghost arrives on the cell where Pacman is, the ghost kills Pacman.
+    		
+    		\item (Terminal test) True if Pacman has eaten all the foods without being killed or Pacman was killed by the ghost.
+    		
+    		\item (Transition model) The movement of Pacman or the ghost to another cell will modified their position in the maze (if the movement is legal). If Pacman eats a food, the food is removed from the maze. If the ghost kills Pacman, Pacman is removed from the maze and can no longer play.
+    		
+    		%\item (Utility)\\
+    		%	\begin{equation}
+  			%		utility(s,p)=\left\{
+    		%			\begin{array}{@{} l c @{}}
+      		%				\text{initial number of foods} & s = \text{Pacman wins and } p = \text{Pacman}\\
+      		%				- \text{initial number of foods} & s = \text{Ghost wins}
+    		%			\end{array}\right.
+  			%	\label{eq4}
+			%\end{equation}
+			
+			\item (Utility) \begin{equation}
+  										utility=\left\{
+    										\begin{array}{@{} l c @{}}
+      											\text{Game score} & \text{Pacman wins (ghost loses)}\\
+      											-\text{Game score} & \text{Pacman loses (ghost wins)}
+    										\end{array}\right.
+  										\label{eq4}
+									\end{equation}
+    	\end{itemize}
+    	
+    \item Pacman will be the max agent and the ghost the min agent. Pacman wants to maximize the utility function (which implies maximizing the game score) by eating all the food dots in a minimum time steps and avoiding the ghost.\\
+          The ghost, on his side, wants to kill Pacman as fast as possible to minimize the utility function (which implies minimizing the game score). This description make the game of Pacman a zero-sum game because the sum of the utility functions in the different terminal states is equal to 0.
 \end{enumerate}
 
 \section{Implementation}
