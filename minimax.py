@@ -54,6 +54,36 @@ class PacmanAgent(Agent):
 
         return bestAction
 
+    def terminal_test(self, state):
+        """
+        Given a pacman game state, returns if the game is over or not.
+        Arument:
+        --------
+        - `state`: the current game state.
+        Return:
+        -------
+        - True if the game is over. Else, False
+        """
+
+        # pacman wins (ate all food dots) or loses (killed by ghost)
+        if state.isWin() or state.isLose():
+            return True
+        else:
+            return False
+
+    def utility(self, state):
+        """
+        Given a game state, returns the utility of the game state for Pacman.
+        Argument:
+        ---------
+        - `state`: the current game state.
+        Return:
+        -------
+        - The utility for Pacman of the game state `state`.
+        """
+
+        return state.getScore()
+
     def minimax(self, state):
         """
         Minimax value for Pacman in a given game state
@@ -101,10 +131,8 @@ class PacmanAgent(Agent):
         - Minimax value when Pacman is playing in state `state`.
         """
 
-        if state.isWin():
-            return -state.getScore()
-        elif state.isLose():
-            return state.getScore()
+        if self.terminal_test(state):
+            return self.utility(state)
 
         v = float('-inf')
 
@@ -137,10 +165,8 @@ class PacmanAgent(Agent):
         - Minimax value when the ghost is playing in state `state`.
         """
 
-        if state.isWin():
-            return state.getScore()
-        elif state.isLose():
-            return -state.getScore()
+        if self.terminal_test(state):
+            return self.utility(state)
 
         v = float('inf')
 
