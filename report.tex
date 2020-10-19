@@ -72,7 +72,9 @@
 \section{Implementation}
 
 \begin{enumerate}[label=\alph*.,leftmargin=*]
-    \item
+    \item Minimax is complete if the game tree is finite. For the game Pacman, in general, the game tree is finite because either Pacman will eat all the food dots or the ghost will kill Pacman. However, if the ghost keeps chasing Pacman without being able to kill it and Pacman is not able to eat all the food dots, the algorithm will never end.\\
+    %We could limit the recursion of the minimax algorithm. This is equivalent to adding a condition in the terminal test which will end the game on a draw after a given number of moves and returning 0 as a utility for both agent.
+    As for the A$^*$ graph-search algorithm, we could keep a set which will remember the game states already considered so we don't spend computing time to recompute them. This will prevent Pacman and the ghost to do the same movements indefinitely.
     \item \textbf{\textit{Leave empty.}}
     \item \textbf{\textit{Leave empty.}}
     \item
