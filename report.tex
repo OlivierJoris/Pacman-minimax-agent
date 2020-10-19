@@ -55,18 +55,11 @@
   			%	\label{eq4}
 			%\end{equation}
 			
-			\item (Utility) \begin{equation}
-  										utility=\left\{
-    										\begin{array}{@{} l c @{}}
-      											\text{Game score} & \text{Pacman wins (ghost loses)}\\
-      											-\text{Game score} & \text{Pacman loses (ghost wins)}
-    										\end{array}\right.
-  										\label{eq4}
-									\end{equation}
+			\item (Utility) Utility = Game score
     	\end{itemize}
     	
     \item Pacman will be the max agent and the ghost the min agent. Pacman wants to maximize the utility function (which implies maximizing the game score) by eating all the food dots in a minimum time steps and avoiding the ghost.\\
-          The ghost, on his side, wants to kill Pacman as fast as possible to minimize the utility function (which implies minimizing the game score). This description make the game of Pacman a zero-sum game because the sum of the utility functions in the different terminal states is equal to 0.
+          The ghost, on his side, wants to kill Pacman as fast as possible to minimize the utility function (which implies minimizing the game score). This description make the game of Pacman a zero-sum game because the sum of the utility functions in the different terminal states is constant.
 \end{enumerate}
 
 \section{Implementation}
