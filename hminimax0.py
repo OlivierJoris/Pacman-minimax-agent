@@ -133,8 +133,6 @@ class PacmanAgent(Agent):
 
         # Remembers game states already visited. Like for A* graph-search.
         closed = set()
-        evalValues = []
-
         nextStates = state.generatePacmanSuccessors()
 
         # Find the action that maximizes the utility of Pacman (max agent = 0)
@@ -142,7 +140,6 @@ class PacmanAgent(Agent):
             closed.add(key(nextState, 0))
 
             evalValue = self.min_value(nextState, closed, depth)
-            evalValues.append(evalValue)
 
             if evalValue > maxEvalValue:
                 maxEvalValue = evalValue
