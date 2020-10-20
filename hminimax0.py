@@ -35,7 +35,7 @@ class PacmanAgent(Agent):
         - `args`: Namespace of arguments from command-line prompt.
         """
         self.args = args
-        self.maxDepth = 5
+        self.maxDepth = 8
 
     def get_action(self, state):
         """
@@ -51,7 +51,7 @@ class PacmanAgent(Agent):
         - A legal move as defined in `game.Directions`.
         """
 
-        bestAction = self.minimax(state, 0)
+        bestAction = self.hminimax(state, 0)
 
         return bestAction
 
@@ -73,7 +73,7 @@ class PacmanAgent(Agent):
         if state.isLose() or state.isWin():
             return True
 
-        if depth >= self.maxDepth:
+        if depth == self.maxDepth:
             return True
 
         return False
@@ -112,9 +112,13 @@ class PacmanAgent(Agent):
         ghostDistance = abs(pacmanPosition[0] - ghostPosition[0])\
                         + abs(pacmanPosition[1] - ghostPosition[1])
 
-        return state.getScore() - 4 * minDistanceFood + 2 * ghostDistance - 8 * state.getNumFood()
+        # The coefficients of the features has been inspired from 
+        # https://www.dcalacci.net/2013/pacman-gradient-descent/
+
+        return state.getScore() -  2 / ghostDistance - 1.5 * minDistanceFood -\
+               4 * state.getNumFood()
  
-    def minimax(self, state, depth):
+    def hminimax(self, state, depth):
         """
         Minimax value for Pacman in a given game state
 
@@ -129,7 +133,6 @@ class PacmanAgent(Agent):
         """
 
         maxEvalValue = float('-inf')
-        bestAction = None
 
         # Remembers game states already visited. Like for A* graph-search.
         closed = set()
@@ -144,7 +147,7 @@ class PacmanAgent(Agent):
             if evalValue > maxEvalValue:
                 maxEvalValue = evalValue
                 bestAction = action
-
+        
         return bestAction
 
     def max_value(self, state, closed, depth):
