@@ -114,7 +114,6 @@ class PacmanAgent(Agent):
 
         # The coefficients of the features has been inspired from 
         # https://www.dcalacci.net/2013/pacman-gradient-descent/
-
         return state.getScore() -  2 / ghostDistance - 1.5 * minDistanceFood -\
                4 * state.getNumFood()
  

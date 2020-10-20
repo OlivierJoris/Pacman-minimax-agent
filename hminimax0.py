@@ -76,6 +76,28 @@ class PacmanAgent(Agent):
         if depth == self.maxDepth:
             return True
 
+        pacmanPosition = state.getPacmanPosition()
+
+        ghostPosition = state.getGhostPosition(1)
+        pacmanGhostDistance = abs(pacmanPosition[0] - ghostPosition[0])\
+                              + abs(pacmanPosition[1] - ghostPosition[1])
+        
+        foodMatrix = state.getFood()
+        
+        minPacmanFood = float('+inf')
+
+        for i in range(foodMatrix.width):
+            for j in range(foodMatrix.height):
+                if foodMatrix[i][j]:
+                    distancePacman = abs(pacmanPosition[0] - i)\
+                                     + abs(pacmanPosition[1] - j)
+
+                    if distancePacman < minPacmanFood:
+                        minPacmanFood = distancePacman
+
+        if pacmanGhostDistance > minPacmanFood:
+            return True
+
         return False
 
     def eval(self, state):
@@ -114,7 +136,6 @@ class PacmanAgent(Agent):
 
         # The coefficients of the features has been inspired from 
         # https://www.dcalacci.net/2013/pacman-gradient-descent/
-
         return state.getScore() -  2 / ghostDistance - 1.5 * minDistanceFood -\
                4 * state.getNumFood()
  
