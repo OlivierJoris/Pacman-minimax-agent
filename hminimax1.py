@@ -76,6 +76,28 @@ class PacmanAgent(Agent):
         if depth == self.maxDepth:
             return True
 
+        pacmanPosition = state.getPacmanPosition()
+
+        ghostPosition = state.getGhostPosition(1)
+        pacmanGhostDistance = abs(pacmanPosition[0] - ghostPosition[0])\
+                              + abs(pacmanPosition[1] - ghostPosition[1])
+        
+        foodMatrix = state.getFood()
+        
+        minPacmanFood = float('+inf')
+
+        for i in range(foodMatrix.width):
+            for j in range(foodMatrix.height):
+                if foodMatrix[i][j]:
+                    distancePacman = abs(pacmanPosition[0] - i)\
+                                     + abs(pacmanPosition[1] - j)
+
+                    if distancePacman < minPacmanFood:
+                        minPacmanFood = distancePacman
+
+        if pacmanGhostDistance >= minPacmanFood:
+            return True
+
         return False
 
     def eval(self, state):
@@ -111,11 +133,8 @@ class PacmanAgent(Agent):
         ghostPosition = state.getGhostPosition(1)
         ghostDistance = abs(pacmanPosition[0] - ghostPosition[0])\
                         + abs(pacmanPosition[1] - ghostPosition[1])
-
-        # The coefficients of the features has been inspired from 
-        # https://www.dcalacci.net/2013/pacman-gradient-descent/
-        return state.getScore() -  2 / ghostDistance - 1.5 * minDistanceFood -\
-               4 * state.getNumFood()
+                        
+        return state.getScore() - minDistanceFood - 3 * state.getNumFood() - 1 / ghostDistance
  
     def hminimax(self, state, depth):
         """
@@ -136,6 +155,7 @@ class PacmanAgent(Agent):
         # Remembers game states already visited. Like for A* graph-search.
         closed = set()
         nextStates = state.generatePacmanSuccessors()
+        bestAction = None
 
         # Find the action that maximizes the utility of Pacman (max agent = 0)
         for nextState, action in nextStates:
