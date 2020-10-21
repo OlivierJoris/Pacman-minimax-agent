@@ -35,6 +35,9 @@ class PacmanAgent(Agent):
         - `args`: Namespace of arguments from command-line prompt.
         """
         self.args = args
+        self.maxDepth = 5
+        self.init = True
+        self.initNumFood = 0
 
     def get_action(self, state):
         """
@@ -49,6 +52,10 @@ class PacmanAgent(Agent):
         -------
         - A legal move as defined in `game.Directions`.
         """
+
+        if self.init:
+            self.initNumFood = state.getNumFood()
+            init = False
 
         bestAction = self.hminimax(state, 0)
 
@@ -69,29 +76,7 @@ class PacmanAgent(Agent):
         - True if we have to stop the computations. Else, False.
         """
 
-        if state.isLose() or state.isWin() or depth == 8:
-            return True
-
-        pacmanPosition = state.getPacmanPosition()
-
-        ghostPosition = state.getGhostPosition(1)
-        pacmanGhostDistance = abs(pacmanPosition[0] - ghostPosition[0])\
-                              + abs(pacmanPosition[1] - ghostPosition[1])
-        
-        foodMatrix = state.getFood()
-        
-        minPacmanFood = float('+inf')
-
-        for i in range(foodMatrix.width):
-            for j in range(foodMatrix.height):
-                if foodMatrix[i][j]:
-                    distancePacman = abs(pacmanPosition[0] - i)\
-                                     + abs(pacmanPosition[1] - j)
-
-                    if distancePacman < minPacmanFood:
-                        minPacmanFood = distancePacman
-
-        if pacmanGhostDistance >= minPacmanFood:
+        if state.isLose() or state.isWin() or depth == self.maxDepth:
             return True
 
         return False
@@ -110,27 +95,14 @@ class PacmanAgent(Agent):
         - A numerical value that estimates the actual state.
         """
 
-        if state.isLose() or state.isWin():
-            return state.getScore()
-        
         pacmanPosition = state.getPacmanPosition()
-        foodMatrix = state.getFood()
-        
-        minDistanceFood = float('+inf')
-
-        for i in range(foodMatrix.width):
-            for j in range(foodMatrix.height):
-                if foodMatrix[i][j]:
-                    distance = abs(pacmanPosition[0] - i)\
-                               + abs(pacmanPosition[1] - j)
-                    if distance < minDistanceFood:
-                        minDistanceFood = distance
-
         ghostPosition = state.getGhostPosition(1)
+
         ghostDistance = abs(pacmanPosition[0] - ghostPosition[0])\
                         + abs(pacmanPosition[1] - ghostPosition[1])
 
-        return state.getScore() - minDistanceFood - 3*state.getNumFood() - 2/ghostDistance
+        #return 10*(self.initNumFood - state.getNumFood()) + 5*ghostDistance
+        return - 10*state.getNumFood() + ghostDistance
  
     def hminimax(self, state, depth):
         """
