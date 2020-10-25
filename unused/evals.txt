@@ -1,0 +1,15 @@
+all.py
+------
+  - Ok pour tout
+ 
+all_2.py
+--------
+  - Juste en modifiant cutoff et en gardant eval (autorisé par l'énoncé)
+  - Ok pour tout
+
+diff_cut_3.py
+-------------
+  - Ok sauf large avec dumby
+  - Peut être qu'on peut le faire fonctionner avec large/dumby en modifiant les facteurs ou la cutoff
+
+Les fichiers *.sh c'est par ce que j'en avais marre de mitrailler la touche flèche du haut dans le terminal

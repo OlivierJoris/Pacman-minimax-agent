@@ -1,4 +1,4 @@
-# Maxime Goffart (20180521) and Olivier Joris (20182113)
+# Complete this class for all parts of the project
 
 from pacman_module.game import Agent
 from pacman_module.pacman import Directions
@@ -35,6 +35,9 @@ class PacmanAgent(Agent):
         - `args`: Namespace of arguments from command-line prompt.
         """
         self.args = args
+        self.maxDepth = 5
+        self.init = True
+        self.initNumFood = 0
 
     def get_action(self, state):
         """
@@ -50,78 +53,90 @@ class PacmanAgent(Agent):
         - A legal move as defined in `game.Directions`.
         """
 
-        bestAction = self.minimax(state)
+        if self.init:
+            self.initNumFood = state.getNumFood()
+            init = False
+
+        bestAction = self.hminimax(state, 0)
 
         return bestAction
 
-    def terminal_test(self, state):
+    def cutoff_test(self, state, depth):
         """
-        Given a game state, returns if the game is over or not.
+        Given the current game state and the current explored depth
+        of the tree, check if the computations should stop now.
 
-        Arument:
-        --------
+        Arguments:
+        ----------
         - `state`: the current game state.
+        - `depth`: the current explored depth of the tree.
 
         Return:
         -------
-        - True if the game is over. Else, False
+        - True if we have to stop the computations. Else, False.
         """
 
-        # pacman wins (ate all food dots) or loses (killed by ghost)
-        if state.isWin() or state.isLose():
+        if state.isLose() or state.isWin() or depth == self.maxDepth:
             return True
-        else:
-            return False
 
-    def utility(self, state):
+        return False
+
+    def eval(self, state):
         """
-        Given a game state, returns the utility of the game state.
-
-        Argument:
-        ---------
+        Given an agent game state, returns a numerical value that
+        estimates this state.
+        
+        Arguments:
+        ----------
         - `state`: the current game state.
 
         Return:
         -------
-        - The utility of the game state `state`.
+        - A numerical value that estimates the actual state.
         """
 
-        return state.getScore()
+        pacmanPosition = state.getPacmanPosition()
+        ghostPosition = state.getGhostPosition(1)
 
-    def minimax(self, state):
+        ghostDistance = abs(pacmanPosition[0] - ghostPosition[0])\
+                        + abs(pacmanPosition[1] - ghostPosition[1])
+
+        #return 10*(self.initNumFood - state.getNumFood()) + 5*ghostDistance
+        return - 10*state.getNumFood() + ghostDistance
+ 
+    def hminimax(self, state, depth):
         """
-        Minimax value for Pacman in a given game state.
+        Minimax value for Pacman in a given game state
 
         Argument:
         ---------
         - `state`: the current game state.
+        - `depth`: the current explored depth of the tree.
 
         Return:
         -------
-        - Minimax value for Pacman in state `state`.
+        - Minimax value for Pacman in state `state`
         """
 
-        maxUtility = float('-inf')
-        bestAction = None
+        maxEvalValue = float('-inf')
 
         # Remembers game states already visited. Like for A* graph-search.
         closed = set()
-
         nextStates = state.generatePacmanSuccessors()
 
         # Find the action that maximizes the utility of Pacman (max agent = 0)
         for nextState, action in nextStates:
             closed.add(key(nextState, 0))
 
-            utility = self.min_value(nextState, closed)
+            evalValue = self.min_value(nextState, closed, depth)
 
-            if utility > maxUtility:
-                maxUtility = utility
+            if evalValue > maxEvalValue:
+                maxEvalValue = evalValue
                 bestAction = action
-
+        
         return bestAction
 
-    def max_value(self, state, closed):
+    def max_value(self, state, closed, depth):
         """
         Minimax value in given state when Pacman is playing.
 
@@ -129,14 +144,15 @@ class PacmanAgent(Agent):
         ----------
         - `state`: the current game state.
         - `closed`: set of already visited game states.
+        - `depth`: the current explored depth of the tree.
 
         Return:
         -------
         - Minimax value when Pacman is playing in state `state`.
         """
 
-        if self.terminal_test(state):
-            return self.utility(state)
+        if self.cutoff_test(state, depth):
+            return self.eval(state)
 
         v = float('-inf')
 
@@ -146,16 +162,17 @@ class PacmanAgent(Agent):
             # not visiting already visited states
             if keyValue not in closed:
                 closed.add(keyValue)
+                newDepth = depth + 1
 
                 """
                 Each recursive call should works on its own copy of closed.
                 Python uses call by reference so we need to copy the set.
                 """
-                v = max(v, self.min_value(nextState, closed.copy()))
+                v = max(v, self.min_value(nextState, closed.copy(), newDepth))
 
         return v
 
-    def min_value(self, state, closed):
+    def min_value(self, state, closed, depth):
         """
         Minimax value in given state when ghost is playing.
 
@@ -163,14 +180,15 @@ class PacmanAgent(Agent):
         ----------
         - `state`: the current game state.
         - `closed`: set of already visited game states.
+        - `depth`: the current explored depth of the tree.
 
         Return:
         -------
         - Minimax value when the ghost is playing in state `state`.
         """
 
-        if self.terminal_test(state):
-            return self.utility(state)
+        if self.cutoff_test(state, depth):
+            return self.eval(state)
 
         v = float('inf')
 
@@ -180,11 +198,12 @@ class PacmanAgent(Agent):
             # not visiting already visited states
             if keyValue not in closed:
                 closed.add(keyValue)
+                newDepth = depth + 1
 
                 """
                 Each recursive call should works on its own copy of closed.
                 Python uses call by reference so we need to copy the set.
                 """
-                v = min(v, self.max_value(nextState, closed.copy()))
+                v = min(v, self.max_value(nextState, closed.copy(), newDepth))
 
         return v
