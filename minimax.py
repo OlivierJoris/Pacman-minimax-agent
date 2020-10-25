@@ -1,4 +1,4 @@
-# Complete this class for all parts of the project
+# Maxime Goffart (20180521) and Olivier Joris (20182113)
 
 from pacman_module.game import Agent
 from pacman_module.pacman import Directions
@@ -56,10 +56,12 @@ class PacmanAgent(Agent):
 
     def terminal_test(self, state):
         """
-        Given a pacman game state, returns if the game is over or not.
+        Given a game state, returns if the game is over or not.
+
         Arument:
         --------
         - `state`: the current game state.
+
         Return:
         -------
         - True if the game is over. Else, False
@@ -73,20 +75,22 @@ class PacmanAgent(Agent):
 
     def utility(self, state):
         """
-        Given a game state, returns the utility of the game state for Pacman.
+        Given a game state, returns the utility of the game state.
+
         Argument:
         ---------
         - `state`: the current game state.
+
         Return:
         -------
-        - The utility for Pacman of the game state `state`.
+        - The utility of the game state `state`.
         """
 
         return state.getScore()
 
     def minimax(self, state):
         """
-        Minimax value for Pacman in a given game state
+        Minimax value for Pacman in a given game state.
 
         Argument:
         ---------
@@ -94,7 +98,7 @@ class PacmanAgent(Agent):
 
         Return:
         -------
-        - Minimax value for Pacman in state `state`
+        - Minimax value for Pacman in state `state`.
         """
 
         maxUtility = float('-inf')

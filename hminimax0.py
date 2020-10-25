@@ -1,4 +1,4 @@
-# Complete this class for all parts of the project
+# Maxime Goffart (20180521) and Olivier Joris (20182113)
 
 from pacman_module.game import Agent
 from pacman_module.pacman import Directions
@@ -70,16 +70,16 @@ class PacmanAgent(Agent):
         - True if we have to stop the computations. Else, False.
         """
 
-        if state.isLose() or state.isWin() or depth == self.maxDepth:
+        if state.isLose() or state.isWin() or depth >= self.maxDepth:
             return True
 
         pacmanPosition = state.getPacmanPosition()
         ghostPosition = state.getGhostPosition(1)
-        
+
         foodMatrix = state.getFood()
-        
+
         pacmanClosestFoodDistance = float('+inf')
-        currentX, currentY = 0, 0
+        foodPosition = [0, 0]
 
         for i in range(foodMatrix.width):
             for j in range(foodMatrix.height):
@@ -89,11 +89,10 @@ class PacmanAgent(Agent):
 
                     if distancePacman < pacmanClosestFoodDistance:
                         pacmanClosestFoodDistance = distancePacman
-                        currentX = i
-                        currentY = j
-                    
-        ghostFoodDistance = abs(ghostPosition[0] - currentX)\
-                            + abs(ghostPosition[1] - currentY)
+                        foodPosition = [i, j]
+
+        ghostFoodDistance = abs(ghostPosition[0] - foodPosition[0])\
+            + abs(ghostPosition[1] - foodPosition[1])
 
         if ghostFoodDistance > pacmanClosestFoodDistance:
             return True
@@ -102,24 +101,23 @@ class PacmanAgent(Agent):
 
     def eval(self, state):
         """
-        Given an agent game state, returns a numerical value that
-        estimates this state.
-        
+        Given a game state, returns an estimate of the exepected utility.
+
         Arguments:
         ----------
-        - `state`: the current game state.
+        - `state`: a game state.
 
         Return:
         -------
-        - A numerical value that estimates the actual state.
+        - A numerical value that estimates the expected utility.
         """
 
         if state.isLose() or state.isWin():
             return state.getScore()
-        
+
         pacmanPosition = state.getPacmanPosition()
         foodMatrix = state.getFood()
-        
+
         pacmanClosestFoodDistance = float('+inf')
 
         for i in range(foodMatrix.width):
@@ -132,22 +130,23 @@ class PacmanAgent(Agent):
 
         ghostPosition = state.getGhostPosition(1)
         pacmanGhostDistance = abs(pacmanPosition[0] - ghostPosition[0])\
-                               + abs(pacmanPosition[1] - ghostPosition[1])
-                        
-        return state.getScore() - pacmanClosestFoodDistance - 3 * state.getNumFood() - 1 / pacmanGhostDistance
- 
+            + abs(pacmanPosition[1] - ghostPosition[1])
+
+        return state.getScore() - pacmanClosestFoodDistance\
+            - 3 * state.getNumFood() - 1 / pacmanGhostDistance
+
     def hminimax(self, state, depth):
         """
-        Minimax value for Pacman in a given game state
+        H-Minimax value for Pacman in a given game state.
 
-        Argument:
-        ---------
+        Arguments:
+        ----------
         - `state`: the current game state.
         - `depth`: the current explored depth of the tree.
 
         Return:
         -------
-        - Minimax value for Pacman in state `state`
+        - Minimax value for Pacman in state `state`.
         """
 
         maxEvalValue = float('-inf')
@@ -166,12 +165,12 @@ class PacmanAgent(Agent):
             if evalValue > maxEvalValue:
                 maxEvalValue = evalValue
                 bestAction = action
-        
+
         return bestAction
 
     def max_value(self, state, closed, depth):
         """
-        Minimax value in given state when Pacman is playing.
+        H-Minimax value in a given state when Pacman is playing.
 
         Arguments:
         ----------
@@ -207,7 +206,7 @@ class PacmanAgent(Agent):
 
     def min_value(self, state, closed, depth):
         """
-        Minimax value in given state when ghost is playing.
+        H-Minimax value in given state when ghost is playing.
 
         Arguments:
         ----------
