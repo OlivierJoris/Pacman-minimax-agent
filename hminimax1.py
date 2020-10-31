@@ -110,11 +110,19 @@ class PacmanAgent(Agent):
         - A numerical value that estimates the expected utility.
         """
 
-        if state.isLose() or state.isWin():
-            return state.getScore()
-
         pacmanPosition = state.getPacmanPosition()
         foodMatrix = state.getFood()
+        ghostPosition = state.getGhostPosition(1)
+        pacmanGhostDistance = abs(pacmanPosition[0] - ghostPosition[0])\
+            + abs(pacmanPosition[1] - ghostPosition[1])
+
+        if state.isLose() or state.isWin():
+            pacmanClosestFoodDistance = 0  # no food left in the maze
+            utility = state.getScore() - pacmanClosestFoodDistance - 3*state.getNumFood()
+            if pacmanGhostDistance == 0:
+                return utility
+            else:
+                return utility - 1/pacmanGhostDistance
 
         pacmanClosestFoodDistance = float('+inf')
 
@@ -126,12 +134,8 @@ class PacmanAgent(Agent):
                     if distance < pacmanClosestFoodDistance:
                         pacmanClosestFoodDistance = distance
 
-        ghostPosition = state.getGhostPosition(1)
-        ghostDistance = abs(pacmanPosition[0] - ghostPosition[0])\
-            + abs(pacmanPosition[1] - ghostPosition[1])
-
         return state.getScore() - pacmanClosestFoodDistance\
-            - 3 * state.getNumFood() - 1 / ghostDistance
+            - 3 * state.getNumFood() - 1 / pacmanGhostDistance
 
     def hminimax(self, state, depth):
         """
