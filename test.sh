@@ -1,6 +1,7 @@
 #!/bin/bash
 
-agent=hminimax0.py
+agent=hminimax2.py
+echo -e "Using $agent\n"
 
 echo -e "small/dumby"
 python run.py --layout small_adv --agentfile $agent --ghostagent dumby
