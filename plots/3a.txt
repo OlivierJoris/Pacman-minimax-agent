@@ -1,48 +1,46 @@
-hminimax0.py :
+hminimax0.py
 
-    dumby : 
+    dumby
         Total score : 546.0
-        Total computation time (seconds) : 0.6751060485839844
+        Total computation time (seconds) : 0.43427276611328125
         Total expanded nodes : 1013
-    
-    greedy :
+
+    greedy
         Total score : 560.0
-        Total computation time (seconds) : 0.05023622512817383
+        Total computation time (seconds) : 0.020479202270507812
         Total expanded nodes : 30
 
-    smarty : 
+    smarty
         Total score : 560.0
-        Total computation time (seconds) : 0.2405099868774414
+        Total computation time (seconds) : 0.10458183288574219
         Total expanded nodes : 30
 
-hminimax1.py : 
+hminimax1.py
 
-    dumby : 
+    dumby
         Total score : 544.0
-        Total computation time (seconds) : 0.3033175468444824
+        Total computation time (seconds) : 0.18589186668395996
         Total expanded nodes : 382
-
-    greedy : 
+    greedy
         Total score : 560.0
-        Total computation time (seconds) : 0.3528401851654053
+        Total computation time (seconds) : 0.19808149337768555
+        Total expanded nodes : 422
+    smarty
+        Total score : 560.0
+        Total computation time (seconds) : 0.2829768657684326
         Total expanded nodes : 422
 
-    smarty : 
-        Total score : 560.0
-        Total computation time (seconds) : 0.48928165435791016
-        Total expanded nodes : 422
+hminimax2.py
 
-hminimax2.py : 
-
-    dumby : 
-        does not end 
-
-    greedy : 
-        Total score : 551.0
-        Total computation time (seconds) : 2.678455352783203
-        Total expanded nodes : 7553
-
-    smarty : 
-        Total score : 551.0
-        Total computation time (seconds) : 2.790019989013672
-        Total expanded nodes : 7553
+    dumby
+        Total score : 542.0
+        Total computation time (seconds) : 1.2429444789886475
+        Total expanded nodes : 3122
+    greedy
+        Total score : 558.0
+        Total computation time (seconds) : 0.7558848857879639
+        Total expanded nodes : 1865
+    smarty
+        Total score : 558.0
+        Total computation time (seconds) : 0.8371939659118652
+        Total expanded nodes : 1865

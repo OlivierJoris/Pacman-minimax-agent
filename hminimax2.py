@@ -35,7 +35,9 @@ class PacmanAgent(Agent):
         - `args`: Namespace of arguments from command-line prompt.
         """
         self.args = args
-        self.maxDepth = 5
+        self.maxDepth = 4
+        self.init = True
+        self.initNumFood = 0
 
     def get_action(self, state):
         """
@@ -50,6 +52,10 @@ class PacmanAgent(Agent):
         -------
         - A legal move as defined in `game.Directions`.
         """
+
+        if self.init:
+            self.initNumFood = state.getNumFood()
+            self.init = False
 
         bestAction = self.hminimax(state, 0)
 
@@ -72,8 +78,8 @@ class PacmanAgent(Agent):
 
         if state.isLose() or state.isWin() or depth >= self.maxDepth:
             return True
-
-        return False
+        else:
+            return False
 
     def eval(self, state):
         """
@@ -89,12 +95,36 @@ class PacmanAgent(Agent):
         """
 
         pacmanPosition = state.getPacmanPosition()
+        foodMatrix = state.getFood()
         ghostPosition = state.getGhostPosition(1)
-
         pacmanGhostDistance = abs(pacmanPosition[0] - ghostPosition[0])\
             + abs(pacmanPosition[1] - ghostPosition[1])
 
-        return - 10 * state.getNumFood() + pacmanGhostDistance
+        evalValue = 0
+        pacmanClosestFoodDistance = float('+inf')
+
+        if state.isLose() or state.isWin():
+            pacmanClosestFoodDistance = 0  # no food left in the maze
+            if state.isWin():
+                evalValue += 500
+            elif state.isLose():
+                evalValue -= 500
+        else:
+            for i in range(foodMatrix.width):
+                for j in range(foodMatrix.height):
+                    if foodMatrix[i][j]:
+                        distance = abs(pacmanPosition[0] - i)\
+                                + abs(pacmanPosition[1] - j)
+                        if distance < pacmanClosestFoodDistance:
+                            pacmanClosestFoodDistance = distance
+
+        evalValue = evalValue + 10*(self.initNumFood)\
+            - 13*(state.getNumFood())\
+            - pacmanClosestFoodDistance
+        if pacmanGhostDistance != 0:
+            evalValue -= (1/pacmanGhostDistance)
+
+        return evalValue
 
     def hminimax(self, state, depth):
         """
