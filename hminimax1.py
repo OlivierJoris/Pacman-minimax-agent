@@ -118,7 +118,8 @@ class PacmanAgent(Agent):
 
         if state.isLose() or state.isWin():
             pacmanClosestFoodDistance = 0  # no food left in the maze
-            utility = state.getScore() - pacmanClosestFoodDistance - 3*state.getNumFood()
+            utility = state.getScore() - pacmanClosestFoodDistance\
+                - 3*state.getNumFood()
             if pacmanGhostDistance == 0:
                 return utility
             else:
