@@ -1,0 +1,53 @@
+small/dumby
+Pacman emerges victorious! Score: 505
+Total score : 505.0
+Total computation time (seconds) : 0.00578761100769043
+Total expanded nodes : 33
+
+small/greedy
+Pacman emerges victorious! Score: 505
+Total score : 505.0
+Total computation time (seconds) : 0.009886026382446289
+Total expanded nodes : 63
+
+small/smarty
+Pacman emerges victorious! Score: 505
+Total score : 505.0
+Total computation time (seconds) : 0.007647275924682617
+Total expanded nodes : 33
+
+medium/dumby
+Pacman emerges victorious! Score: 539
+Total score : 539.0
+Total computation time (seconds) : 0.10185575485229492
+Total expanded nodes : 292
+
+medium/greedy
+Pacman emerges victorious! Score: 539
+Total score : 539.0
+Total computation time (seconds) : 0.08180689811706543
+Total expanded nodes : 256
+
+medium/smarty
+Pacman emerges victorious! Score: 539
+Total score : 539.0
+Total computation time (seconds) : 0.09767389297485352
+Total expanded nodes : 260
+
+large/dumby
+Pacman emerges victorious! Score: 546
+Total score : 546.0
+Total computation time (seconds) : 0.4515817165374756
+Total expanded nodes : 1013
+
+large/greedy
+Pacman emerges victorious! Score: 560
+Total score : 560.0
+Total computation time (seconds) : 0.020233869552612305
+Total expanded nodes : 30
+
+large/smarty
+Pacman emerges victorious! Score: 560
+Total score : 560.0
+Total computation time (seconds) : 0.10451889038085938
+Total expanded nodes : 30
