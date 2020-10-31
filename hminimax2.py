@@ -81,33 +81,6 @@ class PacmanAgent(Agent):
         else:
             return False
 
-        """ #Other possibility: same as cutoff of hminimax0
-        pacmanPosition = state.getPacmanPosition()
-        ghostPosition = state.getGhostPosition(1)
-
-        foodMatrix = state.getFood()
-
-        pacmanClosestFoodDistance = float('+inf')
-        foodPosition = [0, 0]
-
-        for i in range(foodMatrix.width):
-            for j in range(foodMatrix.height):
-                if foodMatrix[i][j]:
-                    distancePacman = abs(pacmanPosition[0] - i)\
-                                     + abs(pacmanPosition[1] - j)
-
-                    if distancePacman < pacmanClosestFoodDistance:
-                        pacmanClosestFoodDistance = distancePacman
-                        foodPosition = [i, j]
-
-        ghostFoodDistance = abs(ghostPosition[0] - foodPosition[0])\
-            + abs(ghostPosition[1] - foodPosition[1])
-
-        if ghostFoodDistance > pacmanClosestFoodDistance:
-            return True
-
-        return False """
-
     def eval(self, state):
         """
         Given a game state, returns an estimate of the exepected utility.
