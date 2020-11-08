@@ -167,7 +167,7 @@ class PacmanAgent(Agent):
 
             keyValue = key(nextState, 0)
 
-            if keyValue in closed or evalValue < maxEvalValue:
+            if keyValue in closed or evalValue <= maxEvalValue:
                 continue
 
             maxEvalValue = evalValue
