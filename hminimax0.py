@@ -75,30 +75,6 @@ class PacmanAgent(Agent):
         if state.isLose() or state.isWin() or depth >= self.maxDepth:
             return True
 
-        pacmanPosition = state.getPacmanPosition()
-        ghostPosition = state.getGhostPosition(1)
-
-        foodMatrix = state.getFood()
-
-        pacmanClosestFoodDistance = float('+inf')
-        foodPosition = [0, 0]
-
-        for i in range(foodMatrix.width):
-            for j in range(foodMatrix.height):
-                if foodMatrix[i][j]:
-                    distancePacman = abs(pacmanPosition[0] - i)\
-                                     + abs(pacmanPosition[1] - j)
-
-                    if distancePacman < pacmanClosestFoodDistance:
-                        pacmanClosestFoodDistance = distancePacman
-                        foodPosition = [i, j]
-
-        ghostFoodDistance = abs(ghostPosition[0] - foodPosition[0])\
-            + abs(ghostPosition[1] - foodPosition[1])
-
-        if ghostFoodDistance > pacmanClosestFoodDistance:
-            return True
-
         return False
 
     def eval(self, state):
@@ -165,13 +141,15 @@ class PacmanAgent(Agent):
 
         # Find the action that maximizes the utility of Pacman (max agent = 0)
         for nextState, action in nextStates:
-        
+
             evalValue = self.min_value(nextState, closed, depth)
 
             keyValue = key(nextState, 0)
 
             # Avoid to repeat look for already played and visited states
-            if keyValue not in self.playedStates and keyValue not in closed and evalValue > maxEvalValue:
+            if keyValue not in self.playedStates\
+                and keyValue not in closed\
+                    and evalValue > maxEvalValue:
 
                 maxEvalValue = evalValue
                 bestAction = action
