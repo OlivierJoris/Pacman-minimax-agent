@@ -38,6 +38,7 @@ class PacmanAgent(Agent):
         self.maxDepth = 4
         self.init = True
         self.initNumFood = 0
+        self.playedStates = set()
 
     def get_action(self, state):
         """
@@ -58,6 +59,7 @@ class PacmanAgent(Agent):
             self.init = False
 
         bestAction = self.hminimax(state, 0)
+        self.playedStates.add(key(state.generateSuccessor(0, bestAction), 0))
 
         return bestAction
 
@@ -146,7 +148,6 @@ class PacmanAgent(Agent):
         closed = set()
         nextStates = state.generatePacmanSuccessors()
         bestAction = None
-        bestNextState = None
 
         # Find the action that maximizes the utility of Pacman (max agent = 0)
         for nextState, action in nextStates:
@@ -155,15 +156,12 @@ class PacmanAgent(Agent):
 
             keyValue = key(nextState, 0)
 
-            if keyValue in closed or evalValue <= maxEvalValue:
-                continue
+            # Avoid to repeat look for already played and visited states
+            if keyValue not in self.playedStates and keyValue not in closed and evalValue > maxEvalValue:
 
-            maxEvalValue = evalValue
-            bestAction = action
-            bestNextState = nextState
-
-        keyValue = key(bestNextState, 0)
-        closed.add(keyValue)
+                maxEvalValue = evalValue
+                bestAction = action
+                closed.add(keyValue)
 
         return bestAction
 
