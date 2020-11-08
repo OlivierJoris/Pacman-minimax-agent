@@ -146,16 +146,24 @@ class PacmanAgent(Agent):
         closed = set()
         nextStates = state.generatePacmanSuccessors()
         bestAction = None
+        bestNextState = None
 
         # Find the action that maximizes the utility of Pacman (max agent = 0)
         for nextState, action in nextStates:
-            closed.add(key(nextState, 0))
-
+        
             evalValue = self.min_value(nextState, closed, depth)
 
-            if evalValue > maxEvalValue:
-                maxEvalValue = evalValue
-                bestAction = action
+            keyValue = key(nextState, 0)
+
+            if keyValue in closed or evalValue < maxEvalValue:
+                continue
+
+            maxEvalValue = evalValue
+            bestAction = action
+            bestNextState = nextState
+
+        keyValue = key(bestNextState, 0)
+        closed.add(keyValue)
 
         return bestAction
 

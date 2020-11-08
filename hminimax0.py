@@ -160,16 +160,24 @@ class PacmanAgent(Agent):
         closed = set()
         nextStates = state.generatePacmanSuccessors()
         bestAction = None
+        bestNextState = None
 
         # Find the action that maximizes the utility of Pacman (max agent = 0)
         for nextState, action in nextStates:
-            closed.add(key(nextState, 0))
-
+        
             evalValue = self.min_value(nextState, closed, depth)
 
-            if evalValue > maxEvalValue:
-                maxEvalValue = evalValue
-                bestAction = action
+            keyValue = key(nextState, 0)
+
+            if keyValue in closed or evalValue < maxEvalValue:
+                continue
+
+            maxEvalValue = evalValue
+            bestAction = action
+            bestNextState = nextState
+
+        keyValue = key(bestNextState, 0)
+        closed.add(keyValue)
 
         return bestAction
 
@@ -199,13 +207,12 @@ class PacmanAgent(Agent):
             # not visiting already visited states
             if keyValue not in closed:
                 closed.add(keyValue)
-                newDepth = depth + 1
 
                 """
                 Each recursive call should works on its own copy of closed.
                 Python uses call by reference so we need to copy the set.
                 """
-                v = max(v, self.min_value(nextState, closed.copy(), newDepth))
+                v = max(v, self.min_value(nextState, closed.copy(), depth + 1))
 
         return v
 
@@ -235,12 +242,11 @@ class PacmanAgent(Agent):
             # not visiting already visited states
             if keyValue not in closed:
                 closed.add(keyValue)
-                newDepth = depth + 1
 
                 """
                 Each recursive call should works on its own copy of closed.
                 Python uses call by reference so we need to copy the set.
                 """
-                v = min(v, self.max_value(nextState, closed.copy(), newDepth))
+                v = min(v, self.max_value(nextState, closed.copy(), depth + 1))
 
         return v
