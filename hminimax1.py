@@ -205,13 +205,12 @@ class PacmanAgent(Agent):
             # not visiting already visited states
             if keyValue not in closed:
                 closed.add(keyValue)
-                newDepth = depth + 1
 
                 """
                 Each recursive call should works on its own copy of closed.
                 Python uses call by reference so we need to copy the set.
                 """
-                v = max(v, self.min_value(nextState, closed.copy(), newDepth))
+                v = max(v, self.min_value(nextState, closed.copy(), depth + 1))
 
         return v
 
@@ -241,12 +240,11 @@ class PacmanAgent(Agent):
             # not visiting already visited states
             if keyValue not in closed:
                 closed.add(keyValue)
-                newDepth = depth + 1
 
                 """
                 Each recursive call should works on its own copy of closed.
                 Python uses call by reference so we need to copy the set.
                 """
-                v = min(v, self.max_value(nextState, closed.copy(), newDepth))
+                v = min(v, self.max_value(nextState, closed.copy(), depth + 1))
 
         return v
