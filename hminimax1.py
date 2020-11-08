@@ -168,7 +168,7 @@ class PacmanAgent(Agent):
 
             keyValue = key(nextState, 0)
 
-            # Avoid to repeat look for already played and visited states
+            # Avoid to repeat looking for already played and visited states
             if keyValue not in self.playedStates and keyValue not in closed and evalValue > maxEvalValue:
 
                 maxEvalValue = evalValue
