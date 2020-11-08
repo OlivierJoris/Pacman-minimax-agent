@@ -1,46 +1,59 @@
-hminimax0.py
+Using hminimax0.py
 
-    dumby
-        Total score : 546.0
-        Total computation time (seconds) : 0.43427276611328125
-        Total expanded nodes : 1013
+hminimax0.py/large/dumby
+    Pacman emerges victorious! Score: 542
+    Total score : 542.0
+    Total computation time (seconds) : 1.2418715953826904
+    Total expanded nodes : 3122
 
-    greedy
-        Total score : 560.0
-        Total computation time (seconds) : 0.020479202270507812
-        Total expanded nodes : 30
+hminimax0.py/large/greedy
+    Pacman emerges victorious! Score: 558
+    Total score : 558.0
+    Total computation time (seconds) : 0.7822279930114746
+    Total expanded nodes : 1865
 
-    smarty
-        Total score : 560.0
-        Total computation time (seconds) : 0.10458183288574219
-        Total expanded nodes : 30
+hminimax0.py/large/smarty
+    Pacman emerges victorious! Score: 558
+    Total score : 558.0
+    Total computation time (seconds) : 0.8416516780853271
+    Total expanded nodes : 1865
 
-hminimax1.py
+Using hminimax1.py
 
-    dumby
-        Total score : 544.0
-        Total computation time (seconds) : 0.18589186668395996
-        Total expanded nodes : 382
-    greedy
-        Total score : 560.0
-        Total computation time (seconds) : 0.19808149337768555
-        Total expanded nodes : 422
-    smarty
-        Total score : 560.0
-        Total computation time (seconds) : 0.2829768657684326
-        Total expanded nodes : 422
+hminimax1.py/large/dumby
+    Pacman emerges victorious! Score: 542
+    Total score : 542.0
+    Total computation time (seconds) : 1.2615628242492676
+    Total expanded nodes : 3122
 
-hminimax2.py
+hminimax1.py/large/greedy
+    Pacman emerges victorious! Score: 558
+    Total score : 558.0
+    Total computation time (seconds) : 0.7808997631072998
+    Total expanded nodes : 1865
 
-    dumby
-        Total score : 542.0
-        Total computation time (seconds) : 1.2429444789886475
-        Total expanded nodes : 3122
-    greedy
-        Total score : 558.0
-        Total computation time (seconds) : 0.7558848857879639
-        Total expanded nodes : 1865
-    smarty
-        Total score : 558.0
-        Total computation time (seconds) : 0.8371939659118652
-        Total expanded nodes : 1865
+hminimax1.py/large/smarty
+    Pacman emerges victorious! Score: 558
+    Total score : 558.0
+    Total computation time (seconds) : 0.8425991535186768
+    Total expanded nodes : 1865
+
+Using hminimax2.py
+
+hminimax2.py/large/dumby
+    Pacman emerges victorious! Score: 544
+    Total score : 544.0
+    Total computation time (seconds) : 0.1945199966430664
+    Total expanded nodes : 382
+
+hminimax2.py/large/greedy
+    Pacman emerges victorious! Score: 560
+    Total score : 560.0
+    Total computation time (seconds) : 0.20549941062927246
+    Total expanded nodes : 422
+
+hminimax2.py/large/smarty
+    Pacman emerges victorious! Score: 560
+    Total score : 560.0
+    Total computation time (seconds) : 0.2897369861602783
+    Total expanded nodes : 422

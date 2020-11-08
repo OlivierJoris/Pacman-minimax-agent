@@ -36,8 +36,7 @@ class PacmanAgent(Agent):
         """
         self.args = args
         self.maxDepth = 4
-        self.init = True
-        self.initNumFood = 0
+        self.playedStates = set()
 
     def get_action(self, state):
         """
@@ -53,11 +52,8 @@ class PacmanAgent(Agent):
         - A legal move as defined in `game.Directions`.
         """
 
-        if self.init:
-            self.initNumFood = state.getNumFood()
-            self.init = False
-
         bestAction = self.hminimax(state, 0)
+        self.playedStates.add(key(state.generateSuccessor(0, bestAction), 0))
 
         return bestAction
 
@@ -78,8 +74,30 @@ class PacmanAgent(Agent):
 
         if state.isLose() or state.isWin() or depth >= self.maxDepth:
             return True
-        else:
-            return False
+
+        pacmanPosition = state.getPacmanPosition()
+
+        ghostPosition = state.getGhostPosition(1)
+        pacmanGhostDistance = abs(pacmanPosition[0] - ghostPosition[0])\
+            + abs(pacmanPosition[1] - ghostPosition[1])
+
+        foodMatrix = state.getFood()
+
+        pacmanClosestFoodDistance = float('+inf')
+
+        for i in range(foodMatrix.width):
+            for j in range(foodMatrix.height):
+                if foodMatrix[i][j]:
+                    distancePacman = abs(pacmanPosition[0] - i)\
+                                     + abs(pacmanPosition[1] - j)
+
+                    if distancePacman < pacmanClosestFoodDistance:
+                        pacmanClosestFoodDistance = distancePacman
+
+        if pacmanGhostDistance >= pacmanClosestFoodDistance:
+            return True
+
+        return False
 
     def eval(self, state):
         """
@@ -100,38 +118,34 @@ class PacmanAgent(Agent):
         pacmanGhostDistance = abs(pacmanPosition[0] - ghostPosition[0])\
             + abs(pacmanPosition[1] - ghostPosition[1])
 
-        evalValue = 0
-        pacmanClosestFoodDistance = float('+inf')
-
         if state.isLose() or state.isWin():
             pacmanClosestFoodDistance = 0  # no food left in the maze
-            if state.isWin():
-                evalValue += 500
-            elif state.isLose():
-                evalValue -= 500
-        else:
-            for i in range(foodMatrix.width):
-                for j in range(foodMatrix.height):
-                    if foodMatrix[i][j]:
-                        distance = abs(pacmanPosition[0] - i)\
-                                + abs(pacmanPosition[1] - j)
-                        if distance < pacmanClosestFoodDistance:
-                            pacmanClosestFoodDistance = distance
+            utility = state.getScore() - pacmanClosestFoodDistance\
+                - 3*state.getNumFood()
+            if pacmanGhostDistance == 0:
+                return utility
+            else:
+                return utility - 1/pacmanGhostDistance
 
-        evalValue = evalValue + 10*(self.initNumFood)\
-            - 13*(state.getNumFood())\
-            - pacmanClosestFoodDistance
-        if pacmanGhostDistance != 0:
-            evalValue -= (1/pacmanGhostDistance)
+        pacmanClosestFoodDistance = float('+inf')
 
-        return evalValue
+        for i in range(foodMatrix.width):
+            for j in range(foodMatrix.height):
+                if foodMatrix[i][j]:
+                    distance = abs(pacmanPosition[0] - i)\
+                               + abs(pacmanPosition[1] - j)
+                    if distance < pacmanClosestFoodDistance:
+                        pacmanClosestFoodDistance = distance
+
+        return state.getScore() - pacmanClosestFoodDistance\
+            - 3 * state.getNumFood() - 1 / pacmanGhostDistance
 
     def hminimax(self, state, depth):
         """
         H-Minimax value for Pacman in a given game state.
 
-        Argument:
-        ---------
+        Arguments:
+        ----------
         - `state`: the current game state.
         - `depth`: the current explored depth of the tree.
 
@@ -149,13 +163,19 @@ class PacmanAgent(Agent):
 
         # Find the action that maximizes the utility of Pacman (max agent = 0)
         for nextState, action in nextStates:
-            closed.add(key(nextState, 0))
 
             evalValue = self.min_value(nextState, closed, depth)
 
-            if evalValue > maxEvalValue:
+            keyValue = key(nextState, 0)
+
+            # Avoid to repeat looking for already played and visited states
+            if keyValue not in self.playedStates\
+                and keyValue not in closed\
+                    and evalValue > maxEvalValue:
+
                 maxEvalValue = evalValue
                 bestAction = action
+                closed.add(keyValue)
 
         return bestAction
 
@@ -185,13 +205,12 @@ class PacmanAgent(Agent):
             # not visiting already visited states
             if keyValue not in closed:
                 closed.add(keyValue)
-                newDepth = depth + 1
 
                 """
                 Each recursive call should works on its own copy of closed.
                 Python uses call by reference so we need to copy the set.
                 """
-                v = max(v, self.min_value(nextState, closed.copy(), newDepth))
+                v = max(v, self.min_value(nextState, closed.copy(), depth + 1))
 
         return v
 
@@ -221,12 +240,11 @@ class PacmanAgent(Agent):
             # not visiting already visited states
             if keyValue not in closed:
                 closed.add(keyValue)
-                newDepth = depth + 1
 
                 """
                 Each recursive call should works on its own copy of closed.
                 Python uses call by reference so we need to copy the set.
                 """
-                v = min(v, self.max_value(nextState, closed.copy(), newDepth))
+                v = min(v, self.max_value(nextState, closed.copy(), depth + 1))
 
         return v
