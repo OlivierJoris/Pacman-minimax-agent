@@ -1,4 +1,6 @@
-# Project II
+# Pacman minimax agent
+
+Pacman implemented as a minimax agent to win the game. This project has been realized as part of the *Introduction to artificial intelligence* course given by Gilles Louppe at the University of Liège during the 2020-2021 academic year.
 
 ## Table of contents
 
